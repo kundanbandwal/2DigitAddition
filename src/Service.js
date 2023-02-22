@@ -8,7 +8,6 @@ const generateQuestion = (i) => {
     a,
     b,
     answer: a + b,
-    isAnswer: false,
     isSolved: false,
     color: getRandomColor(),
   };
@@ -21,9 +20,8 @@ export const randomIndex = () => Math.floor(Math.random() * TOTAL_QUESTION);
 
 export const getRandomColor = () => {
   const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+  return [...Array(6).keys()].reduce(
+    (color, id) => (color += letters[Math.floor(Math.random() * 16)]),
+    '#'
+  );
 };

@@ -2,20 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
-import Model from './Modal';
+import StartModal from './StartModal';
 import GameOverModal from './GameOverModal';
-import { getQuestions, randomIndex, getRandomColor } from './Model';
+import { getQuestions, randomIndex, getRandomColor } from './Service';
 import { useSnackbar } from 'notistack';
-// import Snackbar from '@material-ui/core/Snackbar';
-
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export default function App() {
   const [open, setOpen] = useState(true);
-  const [questions, setQuestions] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [question, setQuestion] = useState(null);
-  const [answer, setAnswer] = useState(null);
-  // const [correct, setCorrect] = useState(null);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
@@ -26,24 +21,16 @@ export default function App() {
   const selectRandomQuestion = () => {
     let isUnique = true;
     let index = 0;
-    const isQuestions = questions.some((q) => !q.isAnswer);
+    const isQuestions = questions.some((q) => !q.isSolved);
     if (!isQuestions) {
       setGameOver(true);
       return;
     }
     do {
       index = randomIndex();
-      isUnique = questions[index].isAnswer;
+      isUnique = questions[index].isSolved;
     } while (isUnique);
 
-    setQuestions(
-      questions.map((q) => {
-        if (q.index == index) {
-          q.isAnswer = true;
-        }
-        return q;
-      })
-    );
     return questions[index];
   };
 
@@ -57,22 +44,24 @@ export default function App() {
   }, [gameOver, time]);
 
   useEffect(() => {
+    if (questions.length) {
+      setQuestion(selectRandomQuestion());
+    }
+  }, [questions]);
+
+  useEffect(() => {
     if (lives == 0) {
       setGameOver(true);
     }
   }, [lives]);
 
   const handleNewGame = () => {
-    const q = getQuestions();
-    console.log(q);
-    setQuestions((qq) => q);
-    setQuestion(selectRandomQuestion());
+    setQuestions(getQuestions());
     setGameOver(false);
     setOpen(false);
     setScore(0);
     setLives(3);
     setTime(0);
-    // setAnswerOptions(generateAnswerOptions(question.answer));
   };
 
   const handleAnswer = (paramQuestion) => {
@@ -91,6 +80,7 @@ export default function App() {
         })
       );
     } else {
+      // Failed
       setLives((lives) => lives - 1);
       enqueueSnackbar('incorrect', {
         variant: 'error',
@@ -100,7 +90,7 @@ export default function App() {
   };
   return (
     <React.Fragment>
-      {open && <Model open={open} handleClose={handleNewGame} />}
+      {open && <StartModal open={open} handleClose={handleNewGame} />}
       <Box className="container">
         {!open && <Box className="time text-center">{time} sec</Box>}
         <Box className="scoreLive">

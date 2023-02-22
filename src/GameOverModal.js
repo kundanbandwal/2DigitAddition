@@ -26,10 +26,6 @@ export default function GameOverModal({
   time,
   handleNewGame,
 }) {
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-
   return (
     <>
       <Modal open={open} onClose={handleClose}>

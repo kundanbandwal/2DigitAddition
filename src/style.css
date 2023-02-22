@@ -26,7 +26,9 @@ body {
   right: 15px;
 }
 .scoreValue {
-  color: #fff;
+  color: #9c89f6;
+  font-size: large;
+  font-weight: bolder;
 }
 .text-center {
   text-align: center;
@@ -35,7 +37,7 @@ body {
   width: 450px;
   height: 150px;
   margin: 50px auto 10px auto;
-  background-color: grey;
+  background-color: white;
   border-radius: 3px;
   font-family: sans-serif;
   font-size: 80px;
@@ -60,6 +62,7 @@ body {
   margin: 10px auto;
 }
 .box {
+  font-weight: bold;
   width: 100px;
   height: 40px;
   float: left;

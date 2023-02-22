@@ -21,11 +21,7 @@ const style = {
   pb: 3,
 };
 
-export default function Modal({ handleClose }) {
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-
+export default function StartModal({ handleClose }) {
   return (
     <>
       <Modal open={open} onClose={handleClose}>
